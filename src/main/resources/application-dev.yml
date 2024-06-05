@@ -1,0 +1,61 @@
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+##springdoc:
+##    packagesToScan: ht.gouv.menfp.usi.dashboard.rest
+##    pathsToMatch: /v1, /api/v1/**   user=admin and password=password
+
+server:
+  port: 6295
+spring:
+  application:
+    name: ecole_code_generator
+  datasource:
+    initialization-mode: always
+    password: postgres96
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=shoping_db
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 100000
+      idle-timeout: 600000
+      minimum-idle: 30
+      max-lifetime: 900000
+      maximum-pool-size: 30
+      pool-name: HikariPool
+      leak-detection-threshold: 90000
+      connection-test-query: SELECT 1
+      data-source-properties:
+        cache-prep-stmts: true
+        prep-stmt-cache-size: 256
+        prep-stmt-cache-sql-limit: 2048
+        use-server-prep-stmts: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    # show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp:
+          use_jdbc_metadata_defaults: false
+      id:
+        new_generator_mappings: false
+
+
+springdoc:
+  swagger-ui:
+    path=/swagger-ui-custom.html:
+
+
+retry-database:
+    max-attempts: 2
+    backoff: 500
+retry-rest:
+    max-attempts: 3
+    backoff: 500
+jwt:
+  token-expiration-seconds: 1800
+  secret-key: K3CecSSoCNOoqr8gSlARMgy2dPAoDQY7Mcku+1KJvgoxOmvVk3GDRRzrfsIhb/oAs6phyTAPSUtSK+xaGXrWVNLhqAzPTnO7yBSYCrh+URT+JTfltPErXIQIsMt8pFfwVgQSS7cTZZlonlLkyoW03LNkR4iGfjgd1E7s8Dd3bTdnLfqH3u8MoqWkibvtbq7rAmdsuR1R4hoqVLCf8IYsCOzYu3tdPsJaksAH6iF53TOMKWdBBWWVa+ghat11j6Ef0Isa9OlESqcbXzat8Bte/ckqIL3dPADGeql+2GMfc3MQ7k+jDNdyu1DS8G3VnjmPR8IkvpfA/k/jl9bV4+UScA==

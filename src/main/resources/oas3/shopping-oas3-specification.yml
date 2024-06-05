@@ -1,0 +1,119 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://localhost:8089/sigecensus'
+    description: Local server
+info:
+  title: Shopping
+  version: 1.0.0
+  description: API for shooping that expose all endpoint for UI application
+  contact:
+    name: Lab
+    email: juniorbalthazar@yahoo.fr
+    url: https://github.com/juniorbalthazar/shopping-backend
+  license:
+    name: Appliquart 1.0
+    url: 'https://api.menfp.gouv.ht'
+tags:
+  - name: admins
+    description: Secured Admin-only calls
+  - name: regular-users
+    description: Operations available to regular users
+paths:
+  /user/login:
+    post:
+      tags:
+        - regular-users
+      summary: Requestor email validator and  password.
+      operationId: login
+      description: Authentification  form username and password
+      requestBody:
+        description: login
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '201': # status code
+          description: A JSON string containing the verification code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: A JSON Problem object for BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: A JSON Problem object for email already exist (conflict)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: A JSON Problem object for INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '503':
+          description: A JSON Problem object for SERVICE_UNVAILABLE
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+
+
+components:
+  schemas:
+    ########################
+    #  API Specs  #
+    ########################
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: email de la personne qui fera la demande pour suivi administrative
+        password:
+          type: string
+          format: password
+          description: admin123$
+    LoginResponse:
+      type: object
+      properties:
+        username:
+          type: string
+          format: text
+          description: nom d'utilisateur
+        token:
+          type: string
+          format: text
+          description: le token  autorisationde jwt
+        user:
+          type: object
+          properties:
+            nom:
+              type: string
+              format: text
+              description: nom utilisateur
+            prenom:
+              type: string
+              format: text
+              description: prenom utilisateur
+            authorities:
+              type: array
+                - ADMIN
+                - USERS
+                - SIPERVISOR
+    Response:
+      type: object
+      properties:
+        isSuccessfully:
+          type: boolean
+          example: true
+          description: If code validation is validated
